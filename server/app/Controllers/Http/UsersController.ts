@@ -43,5 +43,14 @@ export default class UsersController {
     return newUser
   }
 
-  public async destroy() {}
+  public async destroy({ params }: HttpContextContract) {
+    const deleteUser = await User.findOrFail(params.id)
+
+    deleteUser.delete()
+
+    return {
+      message: 'User succesdfully deleted',
+      user: deleteUser,
+    }
+  }
 }
