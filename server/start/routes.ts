@@ -1,12 +1,10 @@
 import Route from '@ioc:Adonis/Core/Route'
-import { Group } from '@japa/runner'
-
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
 
 Route.group(() => {
-  Route.resource('/users', 'UsersController').apiOnly()
-
-  Route.group(() => {}).prefix('/users')
-}).prefix('/api')
+  Route.get('', 'UsersController.index').as('users')
+  Route.get('/:id', 'UsersController.show').as('user.show')
+  Route.route('/:id', ['PUT', 'PATCH'], 'UsersController.update').as('user.update')
+  Route.delete('/:id', 'UsersController.update').as('user.delete')
+  Route.post('/login', 'LoginController.login').as('user.login')
+  Route.post('/register', 'UsersController.store').as('user.register')
+}).prefix('/users')
