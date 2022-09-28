@@ -8,16 +8,6 @@ export default class UsersController {
     return users
   }
 
-  public async store({ request, response }: HttpContextContract) {
-    const body = request.body()
-
-    const newUser = await User.create(body)
-
-    response.status(201)
-
-    return newUser
-  }
-
   public async show({ params }: HttpContextContract) {
     const user = await User.find(params.id)
 

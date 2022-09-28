@@ -7,7 +7,15 @@ Route.group(() => {
   Route.delete('/:id', 'UsersController.destroy').as('user.delete')
 
   Route.group(() => {
-    Route.post('/login', 'LoginController.login').as('user.login')
-    Route.post('/register', 'UsersController.store').as('user.register')
+    Route.post('/login', 'AuthController.login').as('user.login')
+    Route.post('/register', 'AuthController.register').as('user.register')
+    Route.post('/logout', 'AuthController.logout').as('user.logout')
   })
 }).prefix('/users')
+
+Route.get('dashboard', async ({ auth }) => {
+  await auth.use('api').authenticate()
+
+  // ✅ Request authenticated
+  console.log(auth.user!)
+})
