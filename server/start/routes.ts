@@ -16,6 +16,7 @@ Route.group(() => {
 Route.get('dashboard', async ({ auth }) => {
   await auth.use('api').authenticate()
 
-  // ✅ Request authenticated
   console.log(auth.user!)
+
+  return 'Return'
 })
