@@ -1,22 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import Api from "../services/api";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [name, setName] = React.useState();
   const [username, setUsername] = React.useState();
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
 
-  const handeSubmit = (event) => {
+  const handeSubmit = async (event) => {
     event.preventDefault();
 
-    Api.post("/users/register", {
+    await Api.post("/users/register", {
       name,
       username,
       email,
       password,
-    }).then((res) => console.log(res));
+    })
+      .then((res) => console.log(res))
+      .then(navigate("/login"))
+      .catch(console.log("Error"));
   };
 
   return (
