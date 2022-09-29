@@ -9,19 +9,30 @@ function Register() {
   const [username, setUsername] = React.useState();
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
+  const [ConfirmPassword, setConfirmPassword] = React.useState();
 
-  const handeSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await Api.post("/users/register", {
+    await Api.post("/user/register", {
       name,
       username,
       email,
       password,
-    })
-      .then((res) => console.log(res))
-      .then(navigate("/login"))
-      .catch(console.log("Error"));
+    }).then((res) => console.log(res));
+
+    await Api.post("/user/login", {
+      username,
+      password,
+    }).then((res) => {
+      localStorage.setItem("Nekot", res.data.token);
+      navigate("/dashboard");
+    });
+  };
+
+  const handleSubmitFail = async (event) => {
+    event.preventDefault();
+    alert("Password don't match");
   };
 
   return (
@@ -29,7 +40,9 @@ function Register() {
       <Link to="/">Home</Link>
       <Link to="/login">Login</Link>
 
-      <form onSubmit={handeSubmit}>
+      <form
+        onSubmit={password != ConfirmPassword ? handleSubmitFail : handleSubmit}
+      >
         <label htmlFor="name">Name: </label>
         <input
           type="text"
@@ -44,15 +57,21 @@ function Register() {
         />
         <label htmlFor="email">Email: </label>
         <input
-          type="text"
+          type="email"
           id="email"
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password">Password: </label>
         <input
-          type="text"
+          type="password"
           id="password"
           onChange={(e) => setPassword(e.target.value)}
+        />
+        <label htmlFor="confirm-password">Confirm password: </label>
+        <input
+          type="password"
+          id="confirm-password"
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <button type="submit">Enviar</button>
       </form>

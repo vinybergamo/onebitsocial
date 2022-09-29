@@ -7,13 +7,13 @@ function Login() {
 
   const [username, setUsername] = React.useState();
   const [password, setPassword] = React.useState();
-  const [token, setToken] = React.useState();
+  const [nekot, setNekot] = React.useState();
 
   React.useEffect(() => {
-    const tokenLocal = localStorage.getItem("Nekot");
-    setToken(tokenLocal);
+    const getNekot = localStorage.getItem("Nekot");
+    setNekot(getNekot);
 
-    if (token != undefined) {
+    if (nekot != undefined) {
       navigate("/dashboard");
     }
   }, []);
@@ -21,11 +21,11 @@ function Login() {
   const handeSubmit = async (event) => {
     event.preventDefault();
     try {
-      await Api.post("/users/login", {
+      await Api.post("/user/login", {
         username,
         password,
       }).then((res) => {
-        setToken(res.data.token);
+        setNekot(res.data.token);
       });
     } catch (error) {
       console.log(`Error: ${error}`);
@@ -33,11 +33,11 @@ function Login() {
   };
 
   React.useEffect(() => {
-    if (token != undefined) {
+    if (nekot != undefined) {
+      localStorage.setItem("Nekot", nekot);
       navigate("/dashboard");
-      localStorage.setItem("Nekot", token);
     }
-  }, [token]);
+  }, [nekot]);
 
   return (
     <>
