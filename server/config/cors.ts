@@ -1,7 +1,7 @@
 import { CorsConfig } from '@ioc:Adonis/Core/Cors'
 
 const corsConfig: CorsConfig = {
-  enabled: (request) => request.url().startsWith('/users'),
+  enabled: true,
 
   origin: true,
 
