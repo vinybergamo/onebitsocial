@@ -26,10 +26,20 @@ export default class AuthController {
     }
   }
 
-  public async logout({ auth }: HttpContextContract) {
+  public async logout({ auth, request }: HttpContextContract) {
     await auth.use('api').revoke()
+
     return {
       revoked: true,
+    }
+  }
+
+  public async validator({ auth }: HttpContextContract) {
+    await auth.use('api').authenticate()
+
+    return {
+      auth: true,
+      id: auth.user!.id,
     }
   }
 }
